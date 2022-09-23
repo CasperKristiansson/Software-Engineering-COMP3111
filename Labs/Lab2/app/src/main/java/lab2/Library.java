@@ -1,6 +1,7 @@
 package lab2;
 
 import ex1.Book;
+import ex2.*;
 
 public class Library {
 	public static void main (String arg[]) {
@@ -13,19 +14,17 @@ public class Library {
 			System.out.println("There are " + anotherArray.length + " chapters.");
 			System.out.println(java.util.Arrays.toString(anotherArray));
 		
-			// Computer a = new MobileComputer();
-			// for (int i = 0; i < 10; i++) {
-			// 	a.work();
-			// }
+			Computer a = new MobileComputer();
+			for (int i = 0; i < 10; i++) {
+				a.work();
+			}
 			
-			// Charger c = new Charger();
-			// Phone p = new Phone();
-			// MobileComputer m = new MobileComputer();
+			Charger c = new Charger();
+			Phone p = new Phone();
+			MobileComputer m = new MobileComputer();
 			
-			// c.charge(p);
-			// c.charge(m);
-	
-	
+			c.charge(p);
+			c.charge(m);
 	}
 	
     public boolean someLibraryMethod() {
