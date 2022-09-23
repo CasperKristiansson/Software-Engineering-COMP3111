@@ -1,5 +1,7 @@
 package lab2;
 
+import ex1.Book;
+
 public class Library {
 	public static void main (String arg[]) {
 			final String array[] = {"Basic Java", "Advanced Java", "Guru Java"};

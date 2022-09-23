@@ -1,4 +1,4 @@
-package lab2;
+package ex1;
 
 public class Book {
 	private String chapters[];
