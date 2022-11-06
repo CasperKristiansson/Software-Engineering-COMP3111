@@ -30,11 +30,11 @@ class Process:
         students_df_copy.sort_values(by=['k1_energy', 'k2_energy'], inplace=True)
 
         self.teams = [[] for _ in range(33)]
-        self.__add_above_average_student(students_df_copy)
-        self.__add_pairs(students_df_copy)
-        self.__add_remaining_student(students_df_copy)
+        self.add_above_average_student(students_df_copy)
+        self.add_pairs(students_df_copy)
+        self.add_remaining_student(students_df_copy)
 
-    def __add_above_average_student(self, students_df):
+    def add_above_average_student(self, students_df):
         students_above_mean = students_df[students_df['k1_energy'] >= self.students['k1_energy'].mean()]
 
         for team in self.teams:
@@ -42,7 +42,7 @@ class Process:
             students_above_mean.drop(students_above_mean.index[len(students_above_mean) // 2], inplace=True)
             students_df.drop(team[-1].name, inplace=True)
 
-    def __add_pairs(self, students_df):
+    def add_pairs(self, students_df):
         for team in self.teams:
             student_pairs = list(itertools.combinations(students_df.index, 2))
             min_diff = 100000
@@ -61,7 +61,7 @@ class Process:
             students_df.drop(student_pairs[min_diff_index][0], inplace=True)
             students_df.drop(student_pairs[min_diff_index][1], inplace=True)
 
-    def __add_remaining_student(self, students_df):
+    def add_remaining_student(self, students_df):
         min_diff = 100000
         min_diff_index = 0
 
