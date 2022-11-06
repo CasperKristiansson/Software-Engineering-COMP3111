@@ -31,3 +31,27 @@ def generate_data(students_amount, k1_energy_avg, k2_energy_avg):
             df.loc[student.name, 'k2_energy'] += random.randint(0, 5)
 
     return df
+
+
+def df_analytics(df):
+    stats = f"""
+K1 Energy:
+{df['k1_energy'].describe()}
+-------------
+
+K2 Energy:
+{df['k2_energy'].describe()}
+-------------
+
+K3 Tick 1:
+{df['k3_tick1'].value_counts()}
+-------------
+
+K3 Tick 2:
+{df['k3_tick2'].value_counts()}
+-------------
+
+Amount of rows with k1_energy over average: {len(df[df['k1_energy'] > df['k1_energy'].mean()])}
+    """
+
+    print(stats)
