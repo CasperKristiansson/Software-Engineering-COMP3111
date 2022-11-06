@@ -1,3 +1,10 @@
+import itertools
+import matplotlib.pyplot as plt
+import utilities
+import pandas as pd
+pd.options.mode.chained_assignment = None
+
+
 class Team:
     def __init__(self, students) -> None:
         self.students = students
@@ -88,7 +95,10 @@ class Process:
 
 
 if __name__ == "__main__":
-    p = Process()
-    print(p)
+    students = utilities.generate_data(100, 64, 64)
+    utilities.df_analytics(students)
 
-    team = Team(["A", "B", "C"])
+    p = Process(students)
+    p.generate_teams()
+
+    print(p)
