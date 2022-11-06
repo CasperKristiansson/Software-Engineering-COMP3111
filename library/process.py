@@ -69,7 +69,22 @@ class Process:
         self.teams[min_diff_index].append(students_df.iloc[0])
         students_df.drop(students_df.index[0], inplace=True)
 
-    return teams
+    def __str__(self) -> str:
+        k1_energy_avg = [sum(student['k1_energy'] for student in team) / len(team) for team in self.teams]
+        k2_energy_avg = [sum(student['k2_energy'] for student in team) / len(team) for team in self.teams]
+        k1_k2_energy_avg = [(sum(student['k1_energy'] + student['k2_energy'] for student in team) / 2) / len(team) for team in self.teams]
+
+        plt.plot(k1_energy_avg, label="k1_energy_avg")
+        plt.plot(k2_energy_avg, label="k2_energy_avg")
+        plt.plot(k1_k2_energy_avg, label="k1_k2_energy_avg")
+        plt.legend()
+        plt.show()
+
+        return f"""
+        Difference between the min and max k1_energy_avg: {max(k1_energy_avg) - min(k1_energy_avg)}
+        Difference between the min and max k2_energy_avg: {max(k2_energy_avg) - min(k2_energy_avg)}
+        Difference between the min and max k1_k2_energy_avg: {max(k1_k2_energy_avg) - min(k1_k2_energy_avg)}
+        """
 
 
 if __name__ == "__main__":
