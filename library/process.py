@@ -22,10 +22,16 @@ class Process:
         students_df_copy = self.students.copy()
         students_df_copy.sort_values(by=['k1_energy', 'k2_energy'], inplace=True)
 
+        self.teams = [[] for _ in range(33)]
+        self.__add_above_average_student(students_df_copy)
 
-def add_remaining_student(df, students_df, teams):
-    min_diff = 100000
-    min_diff_index = 0
+    def __add_above_average_student(self, students_df):
+        students_above_mean = students_df[students_df['k1_energy'] >= self.students['k1_energy'].mean()]
+
+        for team in self.teams:
+            team.append(students_above_mean.iloc[len(students_above_mean) // 2])
+            students_above_mean.drop(students_above_mean.index[len(students_above_mean) // 2], inplace=True)
+            students_df.drop(team[-1].name, inplace=True)
 
     for index, row in students_df.iterrows():
         k1_energy_avg = (sum(student['k1_energy'] for student in teams[0]) + row['k1_energy']) / (len(teams[0]) + 1)
