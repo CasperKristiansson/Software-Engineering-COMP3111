@@ -14,8 +14,13 @@ class Team:
 
 
 class Process:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, students) -> None:
+        self.students = students
+        self.teams = []
+
+    def generate_teams(self):
+        students_df_copy = self.students.copy()
+        students_df_copy.sort_values(by=['k1_energy', 'k2_energy'], inplace=True)
 
 
 def add_remaining_student(df, students_df, teams):
