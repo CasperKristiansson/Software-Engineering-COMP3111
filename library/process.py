@@ -6,18 +6,24 @@ pd.options.mode.chained_assignment = None
 
 
 class Team:
-    def __init__(self, students) -> None:
-        self.students = students
+    def __init__(self) -> None:
         self.k1_energy_avg = 0
         self.k2_energy_avg = 0
-        # self.calculate_energy_avg()
+        self.students = []
 
     def calculate_energy_avg(self):
         self.k1_energy_avg = sum(student.k1_energy for student in self.students) / len(self.students)
         self.k2_energy_avg = sum(student.k2_energy for student in self.students) / len(self.students)
 
+    def add_student(self, student):
+        self.students.append(student)
+        self.calculate_energy_avg()
+
     def __str__(self) -> str:
         return f"Team: {self.students}"
+
+    def __len__(self):
+        return len(self.students)
 
 
 class Process:
@@ -29,7 +35,7 @@ class Process:
         students_df_copy = self.students.copy()
         students_df_copy.sort_values(by=['k1_energy', 'k2_energy'], inplace=True)
 
-        self.teams = [[] for _ in range(33)]
+        self.teams = [Team() for _ in range(33)]
         self.add_above_average_student(students_df_copy)
         self.add_pairs(students_df_copy)
         self.add_remaining_student(students_df_copy)
@@ -38,9 +44,9 @@ class Process:
         students_above_mean = students_df[students_df['k1_energy'] >= self.students['k1_energy'].mean()]
 
         for team in self.teams:
-            team.append(students_above_mean.iloc[len(students_above_mean) // 2])
+            team.add_student(students_above_mean.iloc[len(students_above_mean) // 2])
             students_above_mean.drop(students_above_mean.index[len(students_above_mean) // 2], inplace=True)
-            students_df.drop(team[-1].name, inplace=True)
+            students_df.drop(team.students[-1].name, inplace=True)
 
     def add_pairs(self, students_df):
         for team in self.teams:
@@ -49,15 +55,15 @@ class Process:
             min_diff_index = 0
 
             for index, pair in enumerate(student_pairs):
-                k1_energy_avg = (sum(student['k1_energy'] for student in team) + students_df.loc[pair[0]]['k1_energy'] + students_df.loc[pair[1]]['k1_energy']) / (len(team) + 2)
-                k2_energy_avg = (sum(student['k2_energy'] for student in team) + students_df.loc[pair[0]]['k2_energy'] + students_df.loc[pair[1]]['k2_energy']) / (len(team) + 2)
+                k1_energy_avg = (sum(student['k1_energy'] for student in team.students) + students_df.loc[pair[0]]['k1_energy'] + students_df.loc[pair[1]]['k1_energy']) / (len(team) + 2)
+                k2_energy_avg = (sum(student['k2_energy'] for student in team.students) + students_df.loc[pair[0]]['k2_energy'] + students_df.loc[pair[1]]['k2_energy']) / (len(team) + 2)
                 diff = abs(k1_energy_avg - self.students['k1_energy'].mean()) + abs(k2_energy_avg - self.students['k2_energy'].mean())
                 if diff < min_diff:
                     min_diff = diff
                     min_diff_index = index
 
-            team.append(students_df.loc[student_pairs[min_diff_index][0]])
-            team.append(students_df.loc[student_pairs[min_diff_index][1]])
+            team.add_student(students_df.loc[student_pairs[min_diff_index][0]])
+            team.add_student(students_df.loc[student_pairs[min_diff_index][1]])
             students_df.drop(student_pairs[min_diff_index][0], inplace=True)
             students_df.drop(student_pairs[min_diff_index][1], inplace=True)
 
@@ -66,20 +72,20 @@ class Process:
         min_diff_index = 0
 
         for index, team in enumerate(self.teams):
-            k1_energy_avg = (sum(student['k1_energy'] for student in team) + students_df.iloc[0]['k1_energy']) / (len(team) + 1)
-            k2_energy_avg = (sum(student['k2_energy'] for student in team) + students_df.iloc[0]['k2_energy']) / (len(team) + 1)
+            k1_energy_avg = (sum(student['k1_energy'] for student in team.students) + students_df.iloc[0]['k1_energy']) / (len(team) + 1)
+            k2_energy_avg = (sum(student['k2_energy'] for student in team.students) + students_df.iloc[0]['k2_energy']) / (len(team) + 1)
             diff = abs(k1_energy_avg - self.students['k1_energy'].mean()) + abs(k2_energy_avg - self.students['k2_energy'].mean())
             if diff < min_diff:
                 min_diff = diff
                 min_diff_index = index
 
-        self.teams[min_diff_index].append(students_df.iloc[0])
+        self.teams[min_diff_index].add_student(students_df.iloc[0])
         students_df.drop(students_df.index[0], inplace=True)
 
     def __str__(self) -> str:
-        k1_energy_avg = [sum(student['k1_energy'] for student in team) / len(team) for team in self.teams]
-        k2_energy_avg = [sum(student['k2_energy'] for student in team) / len(team) for team in self.teams]
-        k1_k2_energy_avg = [(sum(student['k1_energy'] + student['k2_energy'] for student in team) / 2) / len(team) for team in self.teams]
+        k1_energy_avg = [sum(student['k1_energy'] for student in team.students) / len(team) for team in self.teams]
+        k2_energy_avg = [sum(student['k2_energy'] for student in team.students) / len(team) for team in self.teams]
+        k1_k2_energy_avg = [(sum(student['k1_energy'] + student['k2_energy'] for student in team.students) / 2) / len(team) for team in self.teams]
 
         plt.plot(k1_energy_avg, label="k1_energy_avg")
         plt.plot(k2_energy_avg, label="k2_energy_avg")
