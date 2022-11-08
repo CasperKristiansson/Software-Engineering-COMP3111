@@ -1,3 +1,9 @@
+"""Contains the classes for managing the process part of the
+the program.
+"""
+__author__ = "Casper Kristiansson"
+__email__ = "cok@connect.ust.hk"
+
 import itertools
 import matplotlib.pyplot as plt
 import utilities

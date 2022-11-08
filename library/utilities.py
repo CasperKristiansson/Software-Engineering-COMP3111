@@ -1,8 +1,22 @@
+"""Contains functions for generating mock data and printing analytics of the data"""
+__author__ = "Casper Kristiansson"
+__email__ = "cok@connect.ust.hk"
+
 import pandas as pd
 import random
 
 
 def generate_data(students_amount, k1_energy_avg, k2_energy_avg):
+    """Generates data for the students
+
+    Args:
+        students_amount (int): amount of students to be generated
+        k1_energy_avg (float): average k1 energy
+        k2_energy_avg (float): average k2 energy
+
+    Returns:
+        pandas.DataFrame: generated students
+    """
     df = pd.DataFrame(columns=['stu_id', 'stu_name', 'email', 'k1_energy', 'k2_energy', 'k3_tick1', 'k3_tick2', 'my_pref', 'concerns'])
 
     for i in range(students_amount):
@@ -34,6 +48,14 @@ def generate_data(students_amount, k1_energy_avg, k2_energy_avg):
 
 
 def df_analytics(df):
+    """Prints analytics of the students
+
+    Args:
+        df (pandas.DataFrame): students
+
+    Returns:
+        None
+    """
     stats = f"""
 K1 Energy:
 {df['k1_energy'].describe()}
