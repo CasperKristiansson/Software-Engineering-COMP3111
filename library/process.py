@@ -187,8 +187,8 @@ class Process:
 
 
 if __name__ == "__main__":
-    students = utilities.generate_data(100, 64, 64)
-    # students = pd.read_csv('data\Sample Student Data File.csv')
+    #students = utilities.generate_data(100, 64, 64)
+    students = pd.read_csv(r'../data/Sample_Student_Data_File.CSV')
     utilities.df_analytics(students)
 
     p = Process(students)
