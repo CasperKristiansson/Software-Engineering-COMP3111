@@ -15,7 +15,7 @@ def main():
     with col2:
         uploaded_file = st.file_uploader("Please Upload File", type=None, accept_multiple_files=False, key=None, help=None, args=None, kwargs=None, disabled=False, label_visibility="visible")
 
-        if st.button("Generate", disabled=not i.file_is_uploaded):
+        if st.button("Generate", disabled=not uploaded_file):
             p = library.process.Process(r'data\Sample_Student_Data_File.csv')
             p.process_data()
             p.create_output()
@@ -23,12 +23,9 @@ def main():
             o = library.output.Output(p.output)
             o.render_output()
 
-    if uploaded_file is not None:
+    if uploaded_file:
         i.render_data(uploaded_file)
-        i.file_is_uploaded = True
         st.table(i.students)
-    else:
-        i.file_is_uploaded = False
 
     # students = pd.read_csv(r'data\Sample_Student_Data_File.csv')
     # p = library.process.Process(students)
