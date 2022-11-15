@@ -3,12 +3,13 @@ import library.output
 import library.input
 
 import streamlit as st
-import pandas as pd
 
 
 def main():
     st.set_page_config(layout="wide", page_title="Team Formation", page_icon=":robot_face:")
+    st.markdown("<h1 style='text-align: center'>Team Formation</h1>", unsafe_allow_html=True)
 
+    st.markdown("<h2 style='text-align: center'>Input</h2>", unsafe_allow_html=True)
     i = library.input.Input()
 
     _, upload_column, _ = st.columns([2, 5, 2])
@@ -20,11 +21,16 @@ def main():
             i.render_data(uploaded_file)
             st.table(i.students)
 
+    st.markdown("<h2 style='text-align: center'>Output</h2>", unsafe_allow_html=True)
+
+    _, button_column, _ = st.columns([9, 2, 9])
+    with button_column:
+        button = st.button("Generate Teams", disabled=not uploaded_file)
+
     _, chart_column, _ = st.columns([2, 5, 2])
     with chart_column:
-        if st.button("Generate", disabled=not uploaded_file):
-            students = pd.read_csv(uploaded_file)
-            p = library.process.Process(students)
+        if button:
+            p = library.process.Process(i.students)
 
             with st.spinner("Generating Teams..."):
                 p.generate_teams()
