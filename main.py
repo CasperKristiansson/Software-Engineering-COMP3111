@@ -3,6 +3,7 @@ import library.output
 import library.input
 
 import streamlit as st
+import pandas as pd
 
 
 def main():
@@ -10,22 +11,27 @@ def main():
 
     i = library.input.Input()
 
-    col1, col2, col3 = st.columns([2, 5, 2])
-
-    with col2:
+    _, upload_column, _ = st.columns([2, 5, 2])
+    with upload_column:
         uploaded_file = st.file_uploader("Please Upload File", type=None, accept_multiple_files=False, key=None, help=None, args=None, kwargs=None, disabled=False, label_visibility="visible")
 
-        if st.button("Generate", disabled=not uploaded_file):
-            p = library.process.Process(r'data\Sample_Student_Data_File.csv')
-            p.process_data()
-            p.create_output()
-
-            o = library.output.Output(p.output)
-            o.render_output()
-
     if uploaded_file:
-        i.render_data(uploaded_file)
-        st.table(i.students)
+        with st.expander("View Table", expanded=True):
+            i.render_data(uploaded_file)
+            st.table(i.students)
+
+    _, chart_column, _ = st.columns([2, 5, 2])
+    with chart_column:
+        if st.button("Generate", disabled=not uploaded_file):
+            students = pd.read_csv(uploaded_file)
+            p = library.process.Process(students)
+
+            with st.spinner("Generating Teams..."):
+                p.generate_teams()
+
+            o = library.output.Output(p.teams)
+            df = o.display_chart()
+            st.line_chart(df)
 
     # students = pd.read_csv(r'data\Sample_Student_Data_File.csv')
     # p = library.process.Process(students)
