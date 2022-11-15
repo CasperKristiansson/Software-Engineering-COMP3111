@@ -31,6 +31,7 @@ class Team:
         """
         self.k1_energy_avg = 0
         self.k2_energy_avg = 0
+        self.k1_k2_energy_avg = 0
         self.students = []
 
     def calculate_energy_avg(self):
@@ -41,6 +42,7 @@ class Team:
         """
         self.k1_energy_avg = sum(student.k1_energy for student in self.students) / len(self.students)
         self.k2_energy_avg = sum(student.k2_energy for student in self.students) / len(self.students)
+        self.k1_k2_energy_avg = (self.k1_energy_avg + self.k2_energy_avg) / 2
 
     def add_student(self, student):
         """Adds a student to the team
