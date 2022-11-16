@@ -170,27 +170,32 @@ class Process:
             remaining_students.remove(student_pairs[min_diff_index][1])
 
         return remaining_students
+
+    def add_remaining_student(self, remaining_students):
         """Adds the remaining student to the team with the least difference in average energy
 
         Args:
-            students_df (pandas.DataFrame): students to be grouped
+            remaining_students (list of library.input.Student): students that have not been added to a team
 
         Returns:
-            None
+            remaining_students (list of library.input.Student): students that have not been added to a team
         """
         min_diff = 100000
         min_diff_index = 0
 
         for index, team in enumerate(self.teams):
-            k1_energy_avg = (sum(student['k1_energy'] for student in team.students) + students_df.iloc[0]['k1_energy']) / (len(team) + 1)
-            k2_energy_avg = (sum(student['k2_energy'] for student in team.students) + students_df.iloc[0]['k2_energy']) / (len(team) + 1)
-            diff = abs(k1_energy_avg - self.students['k1_energy'].mean()) + abs(k2_energy_avg - self.students['k2_energy'].mean())
+            k1_energy_avg = team.k1_energy_avg + remaining_students[0].k1_energy / (len(team) + 1)
+            k2_energy_avg = team.k2_energy_avg + remaining_students[0].k1_energy / (len(team) + 1)
+
+            diff = abs(k1_energy_avg - self.students_k1_mean) + abs(k2_energy_avg - self.students_k2_mean)
             if diff < min_diff:
                 min_diff = diff
                 min_diff_index = index
 
-        self.teams[min_diff_index].add_student(students_df.iloc[0])
-        students_df.drop(students_df.index[0], inplace=True)
+        self.teams[min_diff_index].add_student(remaining_students[0])
+        remaining_students.remove(remaining_students[0])
+
+        return remaining_students
 
     def __str__(self) -> str:
         k1_energy_avg = [sum(student['k1_energy'] for student in team.students) / len(team) for team in self.teams]
