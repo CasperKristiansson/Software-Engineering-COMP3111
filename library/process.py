@@ -115,10 +115,8 @@ class Process:
 
         self.teams = [Team() for _ in range(33)]
         remaining_students = self.add_above_average_student(remaining_students)
-        # remaining_students = self.add_pairs(remaining_students)
-        # remaining_students = self.add_remaining_student(remaining_students)
-
-        print(len(remaining_students))
+        remaining_students = self.add_pairs(remaining_students)
+        remaining_students = self.add_remaining_student(remaining_students)
 
     def add_above_average_student(self, remaining_students):
         """Adds students with above average K1 energy to different teams
@@ -141,35 +139,37 @@ class Process:
 
         return remaining_students
 
-    def add_pairs(self, students_df):
+    def add_pairs(self, remaining_students):
         """Adds pairs of students to different teams by creating combinations of 2
         students and adding the pair with the least difference in average energy to the team.
 
         Args:
-            students_df (pandas.DataFrame): students to be grouped
+            remaining_students (list of library.input.Student): students that have not been added to a team
 
         Returns:
-            None
+            remaining_students (list of library.input.Student): students that have not been added to a team
         """
         for team in self.teams:
-            student_pairs = list(itertools.combinations(students_df.index, 2))
+            student_pairs = list(itertools.combinations(remaining_students, 2))
             min_diff = 100000
             min_diff_index = 0
 
             for index, pair in enumerate(student_pairs):
-                k1_energy_avg = (sum(student['k1_energy'] for student in team.students) + students_df.loc[pair[0]]['k1_energy'] + students_df.loc[pair[1]]['k1_energy']) / (len(team) + 2)
-                k2_energy_avg = (sum(student['k2_energy'] for student in team.students) + students_df.loc[pair[0]]['k2_energy'] + students_df.loc[pair[1]]['k2_energy']) / (len(team) + 2)
-                diff = abs(k1_energy_avg - self.students['k1_energy'].mean()) + abs(k2_energy_avg - self.students['k2_energy'].mean())
+                k1_energy_avg = team.k1_energy_avg + pair[0].k1_energy + pair[1].k1_energy / (len(team) + 2)
+                k2_energy_avg = team.k2_energy_avg + pair[0].k2_energy + pair[1].k2_energy / (len(team) + 2)
+
+                diff = abs(k1_energy_avg - self.students_k1_mean) + abs(k2_energy_avg - self.students_k2_mean)
                 if diff < min_diff:
                     min_diff = diff
                     min_diff_index = index
 
-            team.add_student(students_df.loc[student_pairs[min_diff_index][0]])
-            team.add_student(students_df.loc[student_pairs[min_diff_index][1]])
-            students_df.drop(student_pairs[min_diff_index][0], inplace=True)
-            students_df.drop(student_pairs[min_diff_index][1], inplace=True)
+            team.add_student(student_pairs[min_diff_index][0])
+            team.add_student(student_pairs[min_diff_index][1])
 
-    def add_remaining_student(self, students_df):
+            remaining_students.remove(student_pairs[min_diff_index][0])
+            remaining_students.remove(student_pairs[min_diff_index][1])
+
+        return remaining_students
         """Adds the remaining student to the team with the least difference in average energy
 
         Args:
