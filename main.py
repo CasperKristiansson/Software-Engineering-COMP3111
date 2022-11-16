@@ -19,7 +19,7 @@ def main():
     if uploaded_file:
         with st.expander("View Table", expanded=True):
             i.render_data(uploaded_file)
-            st.table(i.students)
+            st.table(i.df)
 
     st.markdown("<h2 style='text-align: center'>Output</h2>", unsafe_allow_html=True)
 
