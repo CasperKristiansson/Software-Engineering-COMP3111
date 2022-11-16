@@ -23,7 +23,7 @@ def main():
 
     st.markdown("<h2 style='text-align: center'>Output</h2>", unsafe_allow_html=True)
 
-    _, button_column, _ = st.columns([9, 2, 9])
+    _, button_column, _ = st.columns([41, 8, 40])
     with button_column:
         button = st.button("Generate Teams", disabled=not uploaded_file)
 
@@ -37,16 +37,10 @@ def main():
 
             o = library.output.Output(p.teams)
             df = o.display_chart()
+
+            st.subheader('Teaming Up performance by Team Average - Graph')
             st.line_chart(df)
 
-    # students = pd.read_csv(r'data\Sample_Student_Data_File.csv')
-    # p = library.process.Process(students)
-
-    # p.generate_teams()
-
-    # o = library.output.Output(p.teams)
-
-    # o.display_chart()
 
     # with st.form(key='name_form', clear_on_submit=False):
     #     name_input = st.text_input(label='Enter name', placeholder='SURNAME, Firstname')
@@ -67,10 +61,6 @@ def main():
     #             st.write("Found")
     #         else:
     #             st.write("Please try again, team not found.")
-
-    # st.subheader('Teaming Up performance by Team Average - Graph')
-    # df = o.display_chart()
-    # st.line_chart(df)
 
 
 if __name__ == "__main__":
