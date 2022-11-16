@@ -6,7 +6,7 @@ __email__ = "cok@connect.ust.hk"
 
 import itertools
 import matplotlib.pyplot as plt
-import utilities
+import library.utilities as utilities
 import pandas as pd
 pd.options.mode.chained_assignment = None
 

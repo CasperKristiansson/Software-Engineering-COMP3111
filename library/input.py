@@ -7,7 +7,6 @@ __email__ = "mdib@connect.ust.hk"
 
 import pandas as pd
 
-pd.options.mode.chained_assignment = None
 
 class Input:
     def __init__(self) -> None:
@@ -24,7 +23,7 @@ class Input:
 
 
 class Student:
-    def __init__(self,stu_id,stu_name,email,k1_energy,k2_energy,k3_tick1,k3_tick2,my_pref,concerns):
+    def __init__(self, stu_id, stu_name, email, k1_energy, k2_energy, k3_tick1, k3_tick2, my_pref, concerns):
         self.stu_id = stu_id
         self.stu_name = stu_name
         self.email = email
