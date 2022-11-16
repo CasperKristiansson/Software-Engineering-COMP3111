@@ -130,7 +130,7 @@ class Process:
             remaining_students (list of library.input.Student): students that have not been added to a team
         """
 
-        students_above_mean = [student for student in remaining_students if student.k1_energy > self.students_k1_mean]
+        students_above_mean = [student for student in remaining_students if student.k1_energy >= self.students_k1_mean]
 
         for team in self.teams:
             student = students_above_mean[len(students_above_mean) // 2]
@@ -157,8 +157,8 @@ class Process:
             min_diff_index = 0
 
             for index, pair in enumerate(student_pairs):
-                k1_energy_avg = team.k1_energy_avg + pair[0].k1_energy + pair[1].k1_energy / (len(team) + 2)
-                k2_energy_avg = team.k2_energy_avg + pair[0].k2_energy + pair[1].k2_energy / (len(team) + 2)
+                k1_energy_avg = (team.k1_energy_avg + pair[0].k1_energy + pair[1].k1_energy) / (len(team) + 2)
+                k2_energy_avg = (team.k2_energy_avg + pair[0].k2_energy + pair[1].k2_energy) / (len(team) + 2)
 
                 diff = abs(k1_energy_avg - self.students_k1_mean) + abs(k2_energy_avg - self.students_k2_mean)
                 if diff < min_diff:
@@ -186,8 +186,8 @@ class Process:
         min_diff_index = 0
 
         for index, team in enumerate(self.teams):
-            k1_energy_avg = team.k1_energy_avg + remaining_students[0].k1_energy / (len(team) + 1)
-            k2_energy_avg = team.k2_energy_avg + remaining_students[0].k1_energy / (len(team) + 1)
+            k1_energy_avg = (team.k1_energy_avg + remaining_students[0].k1_energy) / (len(team) + 1)
+            k2_energy_avg = (team.k2_energy_avg + remaining_students[0].k1_energy) / (len(team) + 1)
 
             diff = abs(k1_energy_avg - self.students_k1_mean) + abs(k2_energy_avg - self.students_k2_mean)
             if diff < min_diff:
