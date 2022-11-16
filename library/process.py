@@ -6,7 +6,7 @@ __email__ = "cok@connect.ust.hk"
 
 import itertools
 import matplotlib.pyplot as plt
-import library.utilities as utilities
+# import library.utilities as utilities
 import pandas as pd
 pd.options.mode.chained_assignment = None
 
@@ -79,7 +79,24 @@ class Process:
             students (pandas.DataFrame): students to be grouped
         """
         self.students = students
+        self.students_k1_mean = 0
+        self.students_k2_mean = 0
         self.teams = []
+
+    def calculate_mean(self):
+        """Calculates the mean of K1 and K2 energy
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        k1_values = [student.k1_energy for student in self.students]
+        k2_values = [student.k2_energy for student in self.students]
+
+        self.students_k1_mean = sum(k1_values) / len(k1_values)
+        self.students_k2_mean = sum(k2_values) / len(k2_values)
 
     def generate_teams(self):
         """Generates teams. The algorithm is as follows:
@@ -93,29 +110,36 @@ class Process:
         Returns:
             None
         """
-        students_df_copy = self.students.copy()
-        students_df_copy.sort_values(by=['k1_energy', 'k2_energy'], inplace=True)
+        remaining_students = self.students
+        remaining_students.sort(key=lambda x: (x.k1_energy, x.k2_energy), reverse=True)
 
         self.teams = [Team() for _ in range(33)]
-        self.add_above_average_student(students_df_copy)
-        self.add_pairs(students_df_copy)
-        self.add_remaining_student(students_df_copy)
+        remaining_students = self.add_above_average_student(remaining_students)
+        # remaining_students = self.add_pairs(remaining_students)
+        # remaining_students = self.add_remaining_student(remaining_students)
 
-    def add_above_average_student(self, students_df):
+        print(len(remaining_students))
+
+    def add_above_average_student(self, remaining_students):
         """Adds students with above average K1 energy to different teams
 
         Args:
-            students_df (pandas.DataFrame): students to be grouped
+            remaining_students (list of library.input.Student): students that have not been added to a team
 
         Returns:
-            None
+            remaining_students (list of library.input.Student): students that have not been added to a team
         """
-        students_above_mean = students_df[students_df['k1_energy'] >= self.students['k1_energy'].mean()]
+
+        students_above_mean = [student for student in remaining_students if student.k1_energy > self.students_k1_mean]
 
         for team in self.teams:
-            team.add_student(students_above_mean.iloc[len(students_above_mean) // 2])
-            students_above_mean.drop(students_above_mean.index[len(students_above_mean) // 2], inplace=True)
-            students_df.drop(team.students[-1].name, inplace=True)
+            student = students_above_mean[len(students_above_mean) // 2]
+            team.add_student(student)
+
+            students_above_mean.remove(student)
+            remaining_students.remove(student)
+
+        return remaining_students
 
     def add_pairs(self, students_df):
         """Adds pairs of students to different teams by creating combinations of 2
@@ -187,11 +211,19 @@ class Process:
 
 
 if __name__ == "__main__":
-    #students = utilities.generate_data(100, 64, 64)
-    students = pd.read_csv(r'../data/Sample_Student_Data_File.CSV')
-    utilities.df_analytics(students)
+    # students = utilities.generate_data(100, 64, 64)
+    # students = pd.read_csv(r'../data/Sample_Student_Data_File.CSV')
+    # utilities.df_analytics(students)
 
-    p = Process(students)
+    # p = Process(students)
+    # p.generate_teams()
+
+    # print(p)
+
+    from input import Input
+
+    i = Input()
+    i.render_data(r'data/Sample_Student_Data_File.CSV')
+
+    p = Process(i.students)
     p.generate_teams()
-
-    print(p)
