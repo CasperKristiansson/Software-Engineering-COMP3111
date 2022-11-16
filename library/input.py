@@ -17,9 +17,11 @@ class Input:
 
     def render_data(self, filename):
         self.df = pd.read_csv(filename)
-
         for _, row in self.df.iterrows():
-            self.students.append(row)
+            self.students.append(Student(row['stu_id'], row['stu_name'], row['email'], row['k1_energy'], row['k2_energy'], row['k3_tick1'], row['k3_tick2'], row['my_pref'], row['concerns']))
+        self.students = pd.DataFrame([vars(student) for student in self.students])
+            
+            
 
 
 class Student:
@@ -36,4 +38,5 @@ class Student:
 
 if __name__ == "__main__":
     i = Input()
+    #i.render_data(r'data/Sample_Student_Data_File.CSV')
     print(i)
