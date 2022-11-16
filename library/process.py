@@ -83,6 +83,8 @@ class Process:
         self.students_k2_mean = 0
         self.teams = []
 
+        self.calculate_mean()
+
     def calculate_mean(self):
         """Calculates the mean of K1 and K2 energy
 
@@ -198,9 +200,9 @@ class Process:
         return remaining_students
 
     def __str__(self) -> str:
-        k1_energy_avg = [sum(student['k1_energy'] for student in team.students) / len(team) for team in self.teams]
-        k2_energy_avg = [sum(student['k2_energy'] for student in team.students) / len(team) for team in self.teams]
-        k1_k2_energy_avg = [(sum(student['k1_energy'] + student['k2_energy'] for student in team.students) / 2) / len(team) for team in self.teams]
+        k1_energy_avg = [team.k1_energy_avg for team in self.teams]
+        k2_energy_avg = [team.k2_energy_avg for team in self.teams]
+        k1_k2_energy_avg = [team.k1_k2_energy_avg for team in self.teams]
 
         plt.plot(k1_energy_avg, label="k1_energy_avg")
         plt.plot(k2_energy_avg, label="k2_energy_avg")
@@ -232,3 +234,4 @@ if __name__ == "__main__":
 
     p = Process(i.students)
     p.generate_teams()
+    print(p)
