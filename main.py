@@ -26,10 +26,15 @@ def main():
     _, button_column, _ = st.columns([41, 8, 40])
     with button_column:
         button = st.button("Generate Teams", disabled=not uploaded_file)
+        find_team_button = st.button("Find your team", disabled=not button)
+
+        if st.session_state.get('button') != True:
+            st.session_state['button'] = button # Saved the state
+
 
     _, chart_column, _ = st.columns([2, 5, 2])
     with chart_column:
-        if button:
+        if st.session_state['button'] == True:
             p = library.process.Process(i.students)
 
             with st.spinner("Generating Teams..."):
@@ -40,27 +45,27 @@ def main():
 
             st.subheader('Teaming Up performance by Team Average - Graph')
             st.line_chart(df)
+        
+            st.subheader('Find your team: ')
+            with st.form(key='name_form', clear_on_submit=False):
+                name_input = st.text_input(label='Enter name', placeholder='SURNAME, Firstname')
+                submitted = st.form_submit_button("Submit")
 
+                if submitted:
+                    if o.student_name_inquiry(name_input):
+                        st.write("Found")
+                    else:
+                        st.write("Please try again, team not found.")
 
-    # with st.form(key='name_form', clear_on_submit=False):
-    #     name_input = st.text_input(label='Enter name', placeholder='SURNAME, Firstname')
-    #     submitted = st.form_submit_button("Submit")
+            with st.form(key='id_form', clear_on_submit=False):
+                id_input = st.text_input(label='Enter student ID', placeholder='12345678')
+                submitted = st.form_submit_button("Submit")
 
-    #     if submitted:
-    #         if o.student_name_inquiry(name_input):
-    #             st.write("Found")
-    #         else:
-    #             st.write("Please try again, team not found.")
-
-    # with st.form(key='id_form', clear_on_submit=False):
-    #     id_input = st.text_input(label='Enter student ID', placeholder='12345678')
-    #     submitted = st.form_submit_button("Submit")
-
-    #     if submitted:
-    #         if o.student_name_inquiry(id_input):
-    #             st.write("Found")
-    #         else:
-    #             st.write("Please try again, team not found.")
+                if submitted:
+                    if o.student_id_inquiry(id_input):
+                        st.write("Found")
+                    else:
+                        st.write("Please try again, team not found.")
 
 
 if __name__ == "__main__":
