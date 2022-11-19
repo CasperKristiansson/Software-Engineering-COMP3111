@@ -89,9 +89,40 @@ class Output:
         
         return None
 
+    def sort_based_on(list1, list2):
+        """Sorts the list list2 based on the first list list1
+
+        Returns:
+            list2 sorted based on list1 in ascending order
+        """
+        array1 = list1
+        array2 = list2
+
+        zipped_pairs = zip(array1, array2)
+
+        return [x for _, x in sorted(zipped_pairs)]
+
+    def sort_lists(list1, list2, list3):
+        """Sorts the two lists list2 and list3 based on list1,
+            all in descending order
+
+        Returns:
+            list1 sorted in descending order
+            list2 and list3 sorted after list1 in descending order
+        """
+        list2 = Output.sort_based_on(list1, list2)
+        list2 = list2[::-1]
+
+        list3= Output.sort_based_on(list1, list3)
+        list3 = list3[::-1]
+
+        list1.sort(reverse=True)
+
+        return list1, list2, list3
+
     def display_chart(self):
-        """Sorts the team energies based on K1 average and then
-            creates a dataframe with the chart information
+        """Collects the information from the Process class and
+            creates and returns a dataframe for the chart
 
         Returns:
             a dataframe with information about the chart
@@ -105,11 +136,8 @@ class Output:
             k2_avg.append(team.k2_energy_avg)
             k1_k2_avg.append(team.k1_k2_energy_avg)
 
-        k1_avg.sort(reverse=True)
-        zipped_pairs_1 = zip(k1_avg, k2_avg)
-        zipped_pairs_2 = zip(k1_avg, k1_k2_avg)
-        sorted_k2 = [x for _, x in sorted(zipped_pairs_1)]
-        sorted_k1_k2 = [x for _, x in sorted(zipped_pairs_2)]
+        k1_avg, k2_avg, k1_k2_avg = Output.sort_lists(k1_avg, k2_avg, k1_k2_avg)
 
-        df_chart = pd.DataFrame({'K1':k1_avg, 'K2':sorted_k2, 'K1 + K2':sorted_k1_k2})
+        df_chart = pd.DataFrame({'K1':k1_avg, 'K2':k2_avg, 'K1 + K2':k1_k2_avg})
+
         return df_chart
