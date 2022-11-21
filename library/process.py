@@ -17,6 +17,7 @@ class Team:
     Attributes:
         k1_energy_avg (float): average K1 energy of the team
         k2_energy_avg (float): average K2 energy of the team
+        k1_k2_energy_avg (float): average K1 and K2 energy of the team
         students (list): list of students in the team
 
     Methods:

@@ -8,6 +8,6 @@ pytest tests
 ## Coverage
 ```bash
 pip install coverage
-converage run -m pytest tests
+coverage run -m pytest tests
 coverage html
 ```

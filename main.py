@@ -1,3 +1,9 @@
+"""This program is responsible for the user interface of the program.
+This means that it is responsible for the user input, processing and
+output of the program.
+"""
+__author__ = "Casper Kristiansson, Nicole Wijkman, Michell Dib"
+
 import library.process
 import library.output
 import library.input
@@ -6,16 +12,26 @@ import streamlit as st
 
 
 def main():
+    """Main function of the program. This function takes use of streamlit
+    to create a user interface for the user to interact with the program.
+
+    Returns:
+        None
+    """
+    # Title of the program
     st.set_page_config(layout="wide", page_title="Team Formation", page_icon=":robot_face:")
     st.markdown("<h1 style='text-align: center'>Team Formation</h1>", unsafe_allow_html=True)
 
+    # Input section
     st.markdown("<h2 style='text-align: center'>Input</h2>", unsafe_allow_html=True)
     i = library.input.Input()
 
+    # Upload file section
     _, upload_column, _ = st.columns([2, 5, 2])
     with upload_column:
         uploaded_file = st.file_uploader("Please Upload File", type=None, accept_multiple_files=False, key=None, help=None, args=None, kwargs=None, disabled=False, label_visibility="visible")
 
+    # View uploaded file section
     if uploaded_file:
         with st.expander("View Table", expanded=True):
             i.render_data(uploaded_file)
@@ -23,21 +39,22 @@ def main():
 
     st.markdown("<h2 style='text-align: center'>Output</h2>", unsafe_allow_html=True)
 
-    _, button_column, _ = st.columns([41, 8, 40])
+    # Team initiation section
+    _, button_column, _ = st.columns([41, 9, 40])
     with button_column:
         button = st.button("Generate Teams", disabled=not uploaded_file)
         find_team_button = st.button("Find your team", disabled=not button)
 
-        if st.session_state.get('button') != True:
-            st.session_state['button'] = button # Saved the state of button
+        if not st.session_state.get('button'):
+            st.session_state['button'] = button  # Saved the state of button
 
-        if st.session_state.get('find_team_button') != True:
-            st.session_state['find_team_button'] = find_team_button # Saved the state find_team_button
+        if not st.session_state.get('find_team_button'):
+            st.session_state['find_team_button'] = find_team_button  # Saved the state find_team_button
 
-
+    # Team generation section/Team output section
     _, chart_column, _ = st.columns([2, 5, 2])
     with chart_column:
-        if st.session_state['button'] == True:
+        if st.session_state['button']:
             p = library.process.Process(i.students)
 
             with st.spinner("Generating Teams..."):
@@ -49,14 +66,12 @@ def main():
             st.subheader('Teaming Up performance by Team Average - Graph')
             st.line_chart(df)
 
-            if st.session_state['find_team_button'] == True:
+            if st.session_state['find_team_button']:
                 st.subheader('Find your team: ')
-                
+
                 with st.form(key='name_form', clear_on_submit=False):
                     name_input = st.text_input(label='Enter name', placeholder='SURNAME, Firstname')
-                    submitted = st.form_submit_button("Submit")
-
-                    if submitted:
+                    if st.form_submit_button("Submit"):
                         df = o.student_name_inquiry(name_input)
 
                         if df is None:
@@ -66,9 +81,7 @@ def main():
 
                 with st.form(key='id_form', clear_on_submit=False):
                     id_input = st.text_input(label='Enter student ID', placeholder='12345678')
-                    submitted = st.form_submit_button("Submit")
-
-                    if submitted:
+                    if st.form_submit_button("Submit"):
                         df = o.student_id_inquiry(id_input)
 
                         if df is None:
