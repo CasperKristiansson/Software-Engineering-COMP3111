@@ -17,6 +17,7 @@ class Output:
         students: list of students in the team
         k1_energy_avg (float): average K1 energy of the team
         k2_energy_avg (float): average K2 energy of the team
+        k1_k2_energy_avg (float): average K1 and K2 energy of the team
 
         All attributes are taken from the Process class
 
@@ -27,8 +28,13 @@ class Output:
         student_id_inquiry: finds a students team based on their student ID
             and returns a dataframe with the team information
 
-        display_chart: sorts the energies by descending order based on K1 and
-            then returns a dataframe with the chart information
+        sort_based_on: Sorts a list "list2" based on another list "list1"
+
+        sort_lists: uses sort_based_on to sort two lists "list2" and "list" based
+            on another list "list1", then returns these in descending order
+
+        display_chart: uses sort_lists to sort the energies by descending 
+            order based on K1 and then returns a dataframe with the chart information
     """
 
     def __init__(self, teams) -> None:
@@ -42,8 +48,11 @@ class Output:
     def student_name_inquiry(self, name_input):
         """Finds a students team based on a students name
 
+        Args:
+            name_input: name of a student
+
         Returns:
-            a dataframe with information about the team to be
+            df: a dataframe with information about the team to be
             displayed in a table
         """
         for index, team in enumerate(self.teams):
@@ -67,8 +76,11 @@ class Output:
     def student_id_inquiry(self, id_input):
         """Finds a students team based on a students student ID
 
+        Args:
+            id_input: student id of a student
+
         Returns:
-            a dataframe with information about the team to be
+            df: a dataframe with information about the team to be
             displayed in a table
         """
         for index, team in enumerate(self.teams):
@@ -92,8 +104,12 @@ class Output:
     def sort_based_on(list1, list2):
         """Sorts the list list2 based on the first list list1
 
+        Args:
+            list1: reference for list2
+            list2: list to be sorted based on list1
+
         Returns:
-            list2 sorted based on list1 in ascending order
+            list2: sorted based on list1 in ascending order
         """
         array1 = list1
         array2 = list2
@@ -106,9 +122,15 @@ class Output:
         """Sorts the two lists list2 and list3 based on list1,
             all in descending order
 
+        Args:
+            list1: reference for list2 and list3
+            list2: list to be sorted based on list1
+            list3: list to be sorted based on list1
+
         Returns:
-            list1 sorted in descending order
-            list2 and list3 sorted after list1 in descending order
+            list1: sorted in descending order
+            list2: sorted after list1 in descending order
+            list3: sorted after list1 in descending order
         """
         list2 = Output.sort_based_on(list1, list2)
         list2 = list2[::-1]
@@ -125,7 +147,7 @@ class Output:
             creates and returns a dataframe for the chart
 
         Returns:
-            a dataframe with information about the chart
+            df_chart: a dataframe with information about the chart
         """
         k1_avg = []
         k2_avg = []
