@@ -1,48 +1,20 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
-Material
-Slides
-Notes/Software Engineering Midterm.docx
-Project/Meeting Minutes 1.docx
-Project/Meeting Minutes 1.pdf
-Project/COMP3111_TRS_r06.pdf
-Project/Meeting Minutes 2.docx
-Project/Meeting Minutes 2.pdf
-Project/Meeting Minutes 3.docx
-Project/Meeting Minutes 3.pdf
+venv
+*.pyc
+.vscode
+Labs/Lab1/app/src/main/java/lab1/Library.class
 Exercise/COMP3111_Review1_F2020.docx
 Exercise/COMP3111_Review2_F2020.docx
 Final/Class Diagram/Class Diagram Print.pdf
+Final/Class Diagram/Exercises Class Diagram.pdf
 Final/Class Diagram/Slides.pdf
 Final/Class Diagram/Raw Information/Slides.pdf
-Final/Class Diagram/Exercises Class Diagram.pdf
-.gitignore
+Final/Class Diagram/Raw Information/Slides2.pdf
 Final/Class Diagram/Raw Information/Temp1.pdf
 Final/Class Diagram/Raw Information/Temp2.pdf
 Final/Class Diagram/Raw Information/Temp3.pdf
-Final/Class Diagram/Raw Information/Slides2.pdf
 Final/Class Diagram/Raw Information/Temp4.pdf
 Final/Class Diagram/Raw Information/Temp5.pdf
 Final/Design Patterns/Design Patterns Print.pdf
@@ -55,8 +27,8 @@ Final/Path Testing/L12 Exercise Casper Kristiansson.pdf
 Final/Path Testing/Path Testing Print.pdf
 Final/Path Testing/Slides.pdf
 Final/State Machine Diagram/L16 Exercise Casper Kristiansson.pdf
-Final/State Machine Diagram/State Machine Diagram Print.pdf
 Final/State Machine Diagram/Slides.pdf
+Final/State Machine Diagram/State Machine Diagram Print.pdf
 Final/State Machine Diagram/Temp1.pdf
 Final/Use Case Diagram/Exercises Use Case Diagram.pdf
 Final/Use Case Diagram/Slides.pdf
@@ -64,3 +36,23 @@ Final/Use Case Diagram/Use Case Diagram Print.pdf
 Final/Use Case Diagram/Raw Information/L07Requirements.pdf
 Final/Use Case Diagram/Raw Information/Temp1.pdf
 Final/Use Case Diagram/Raw Information/Temp2.pdf
+Notes/Software Engineering Midterm.docx
+Slides/COMP3111_TRS_r06.pdf
+Slides/L01Introduction.pdf
+Slides/L03UMLModeling.pdf
+Slides/L04Development.pdf
+Slides/L02UMLModeling.pdf
+Slides/L05Development.pdf
+Slides/L06Requirements.pdf
+Slides/L07Requirements.pdf
+Slides/L08Requirements.pdf
+Slides/L09Requirements.pdf
+Slides/L10Implementation.pdf
+Slides/L11Implementation.pdf
+Slides/L12Testing.pdf
+Slides/L15Analysis&Design.pdf
+Slides/L16Analysis&Design.pdf
+Slides/L17Analysis&Design.pdf
+Slides/L19SQA.pdf
+Slides/L20ProjectMgmt.pdf
+Slides/L18Analysis&Design.pdf
